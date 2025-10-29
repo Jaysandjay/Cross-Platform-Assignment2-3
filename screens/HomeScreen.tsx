@@ -1,25 +1,21 @@
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { FlatList, Image, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import RecipeList from '@/components/RecipeList';
+import { FavoritesContext } from '@/contexts/FavoritesContext';
+import type Recipe from '@/types/Recipe';
+import React, { useContext, useState } from 'react';
+import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 
-//Create Recipe Type
-interface Recipe {
-  id: number,
-  title: string,
-  image: string,
-  imageType: string
-}
 
-
-export default function HomeScreen() {
+export default function HomeScreen({navigation}: any) {
   // TEMP
   const APIKEY = '68ca40677c7b4d3fa5fd36d44dd636a6'
-  const router = useRouter()
+
 
   const [searchText, setSearchText] = useState<string>("");
   const [searchedRecipes, setSearchedRecipes] = useState<Recipe[]>([])
-  const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([])
+  // const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([])
+
+  const { toggleFavorite } = useContext(FavoritesContext)
 
   function handleSearchText(text: string) {
     setSearchText(text)
@@ -42,22 +38,14 @@ export default function HomeScreen() {
     }
   }
 
-  const toggleFavorite = (recipe: Recipe, value: boolean) => {
-    if (value){
-      setFavoriteRecipes([...favoriteRecipes, recipe])
-    }else{
-      setFavoriteRecipes(favoriteRecipes.filter((r) => r.id !== recipe.id))
-    }
-    console.log(favoriteRecipes)
-  }
-
-  const isFavorite = (recipe: Recipe) => {
-    return favoriteRecipes.some((r) => r.id === recipe.id)
-  }
 
 
   return (
    <View style={styles.container}>
+    <Button
+        title="Go to Favorites"
+        onPress={() => navigation.navigate('Favorites')}
+      />
       <Text style={styles.title}>Recipe Finder</Text>
       <TextInput
         style={styles.searchBar}
@@ -72,30 +60,7 @@ export default function HomeScreen() {
         <Text>Search</Text>
       </TouchableOpacity>
 
-      <FlatList
-        data={searchedRecipes}
-        keyExtractor={(recipe) => recipe.id.toString()}
-        renderItem={({ item }) => (
-          <View>
-            <Text>{item.title}</Text>
-            <Switch
-              value={isFavorite(item)}
-              onValueChange={(value) => toggleFavorite(item, value)}
-            />
-            <Image
-              source={{uri: item.image}}
-              style={styles.recipeImage}
-            />
-
-            <TouchableOpacity
-              style={styles.searchButton}
-              onPress={() => router.push(`/recipe?recipeId=${item.id.toString()}`)}
-            >
-              <Text>See Recipe</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+      <RecipeList recipes={searchedRecipes} navigation={navigation}/>
 
    </View>
   );
@@ -127,10 +92,6 @@ const styles = StyleSheet.create({
     width: 100,
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  recipeImage: {
-    width: 100,
-    height: 100
   }
 })
 
