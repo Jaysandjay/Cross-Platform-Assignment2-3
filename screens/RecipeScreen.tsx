@@ -2,7 +2,8 @@ import type RecipeDetails from "@/types/RecipeiDetails";
 import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, useWindowDimensions, View } from "react-native";
 import RenderHTML from "react-native-render-html";
-const APIKEY = "68ca40677c7b4d3fa5fd36d44dd636a6";
+
+const APIKEY = "630133bfb92c43928ed509e01e16330d";
 
 
 
