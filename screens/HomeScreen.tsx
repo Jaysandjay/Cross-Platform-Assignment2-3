@@ -64,19 +64,19 @@ export default function HomeScreen({navigation}: any) {
   async function handleSearch(){
     rotate()
     console.log('searching...')
-  //   try {
-  //     const res = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${searchText}&apiKey=${APIKEY}`)
-  //     if(!res.ok){
-  //       throw new Error(`Error fetching Recipes ${res.status}`)
-  //     }
-  //     const recipes = await res.json()
-  //     console.log(recipes)
-  //     console.log(recipes.results)
-  //     setSearchedRecipes(recipes.results)
-  //   }
-  //   catch (err) {
-  //     console.log(err)
-  //   }
+    try {
+      const res = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${searchText}&apiKey=${APIKEY}`)
+      if(!res.ok){
+        throw new Error(`Error fetching Recipes ${res.status}`)
+      }
+      const recipes = await res.json()
+      console.log(recipes)
+      console.log(recipes.results)
+      setSearchedRecipes(recipes.results)
+    }
+    catch (err) {
+      console.log(err)
+    }
    }
 
 
