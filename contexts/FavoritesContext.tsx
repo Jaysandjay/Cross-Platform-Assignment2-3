@@ -1,5 +1,5 @@
-import type Recipe from "@/types/Recipe";
-import React, { createContext, ReactNode, useState } from "react";
+import type Recipe from '@/types/Recipe';
+import React, { createContext, useState } from 'react';
 
 interface FavoritesContextType {
   favorites: Recipe[];
@@ -12,16 +12,23 @@ export const FavoritesContext = createContext<FavoritesContextType>({
 });
 
 interface FavoritesProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
-export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
+export function FavoritesProvider({ children }: FavoritesProviderProps) {
   const [favorites, setFavorites] = useState<Recipe[]>([]);
 
   const toggleFavorite = (recipe: Recipe, value: boolean) => {
-    setFavorites(prev =>
-      value ? [...prev, recipe] : prev.filter(r => r.id !== recipe.id)
-    );
+    if (!recipe || recipe.id == null) return;
+
+    setFavorites((prev) => {
+      if (value) {
+        if (prev.some((r) => r?.id === recipe.id)) return prev;
+        return [...prev, recipe];
+      } else {
+        return prev.filter((r) => r?.id !== recipe.id);
+      }
+    });
   };
 
   return (
@@ -29,4 +36,4 @@ export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
       {children}
     </FavoritesContext.Provider>
   );
-};
+}

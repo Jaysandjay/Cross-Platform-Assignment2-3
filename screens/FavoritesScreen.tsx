@@ -1,48 +1,59 @@
-import RecipeList from "@/components/RecipeList";
-import { FavoritesContext } from "@/contexts/FavoritesContext";
-import React, { useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import RecipeList from '@/components/RecipeList';
+import { FavoritesContext } from '@/contexts/FavoritesContext';
+import { useContext } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-export default function FavoritesScreen({navigation}: any) {
+export default function FavoritesScreen({ navigation }: any) {
+  const { favorites } = useContext(FavoritesContext);
 
-    const {favorites, toggleFavorite}= useContext(FavoritesContext)
-    if(favorites.length === 0){
-        return(
-            <View>
-                <Text>No Favourites</Text>
-            </View>
-        )
-    }
+  if (!favorites.length) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyTitle}>No favourites yet</Text>
+        <Text style={styles.emptyText}>
+          Turn on the switches on recipes to save them here ✨
+        </Text>
+      </View>
+    );
+  }
 
-    return(
-        <View style={styles.container}>
-            <Text style={styles.title}>Your Favorites</Text>
-           <RecipeList recipes={favorites} navigation={navigation}/>
-        </View>
-    )
+  return (
+    <View style={styles.screen}>
+      <Text style={styles.title}>Your Favourites</Text>
+      <RecipeList navigation={navigation} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    alignItems: 'center',
-    padding: 20,
-    gap: 10
+    backgroundColor: '#050816',
+    paddingHorizontal: 16,
+    paddingTop: 24,
   },
-  title:{
+  title: {
+    color: '#00FFF6',
+    fontSize: 22,
+    fontWeight: '700',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: '#050816',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+  },
+  emptyTitle: {
+    color: '#E5E7EB',
     fontSize: 20,
-    fontWeight: '400'
+    fontWeight: '700',
+    marginBottom: 8,
   },
-  recipeImage: {
-    width: 100,
-    height: 100
+  emptyText: {
+    color: '#9CA3AF',
+    textAlign: 'center',
   },
-   searchButton: {
-    backgroundColor: 'lightblue',
-    padding: 5,
-    borderRadius: 5,
-    width: 100,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-})
+});
