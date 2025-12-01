@@ -1,22 +1,22 @@
 import ProgressBar from "@/components/ProgressBar";
-import HomeScreen from "@/screens/HomeScreen";
+import FavoritesScreen from "@/screens/FavoritesScreen";
 import RecipeScreen from "@/screens/RecipeScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
-export default function SearchTab() {
+export default function FavoritesTab() {
 	return (
 		<View style={{ flex: 1 }}>
 			<ProgressBar />
 			<Stack.Navigator
-				initialRouteName="Home"
+				initialRouteName="FavoritesList"
 				screenOptions={{ headerShown: false }}
 			>
 				<Stack.Screen
-					name="Home"
-					component={HomeScreen}
+					name="FavoritesList"
+					component={FavoritesScreen}
 				/>
 				<Stack.Screen
 					name="Recipe"
